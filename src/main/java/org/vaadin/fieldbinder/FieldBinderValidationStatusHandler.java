@@ -10,7 +10,7 @@ import com.vaadin.flow.function.SerializableEventListener;
  * handling.
  * <p>
  * The default handler will show
- * {@link com.vaadin.ui.AbstractComponent#setComponentError(com.vaadin.server.ErrorMessage)
+ * {@link com.vaadin.flow.component.HasValidation#setErrorMessage(String)
  * an error message} for failed field validations. 
  *
  * @see FieldBinderValidationStatus

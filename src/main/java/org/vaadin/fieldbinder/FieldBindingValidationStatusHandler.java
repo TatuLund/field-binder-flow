@@ -8,7 +8,7 @@ import com.vaadin.flow.function.SerializableEventListener;
  * FieldBindingBuilder#withValidationStatusHandler(FieldBindingValidationStatusHandler)
  * Register} an instance of this class to be able to override the default
  * handling, which is to show
- * {@link com.vaadin.ui.AbstractComponent#setComponentError(com.vaadin.server.ErrorMessage)
+ * {@link com.vaadin.flow.component.HasValidation#setErrorMessage(String)
  * an error message} for failed field validations.
  *
  * FieldBindingBuilder#withValidationStatusHandler(FieldBindingValidationStatusHandler)

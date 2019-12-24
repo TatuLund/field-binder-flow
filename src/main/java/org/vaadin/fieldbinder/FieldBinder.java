@@ -34,7 +34,7 @@ import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.shared.Registration;
 
 /**
- * FieldBinder is a little sibling of {@link Binder} for special case of single
+ * FieldBinder is a little sibling of {@link com.vaadin.flow.data.binder.Binder} for special case of single
  * field bindings. FieldBinder enables to use same Converters, Validators and
  * similar API to Binder with single field binding.
  * 
@@ -228,7 +228,7 @@ public class FieldBinder<TARGET> implements Serializable {
          * <p>
          * For instance, a {@code TextField} can be bound to an integer-typed
          * property using an appropriate converter such as a
-         * {@link StringToIntegerConverter}.
+         * {@link com.vaadin.flow.data.converter.StringToIntegerConverter}.
          *
          * @param <NEWTARGET>
          *            the type to convert to
@@ -361,7 +361,7 @@ public class FieldBinder<TARGET> implements Serializable {
          * after this method call.
          *
          * @see #withValidationStatusHandler(FieldBindingValidationStatusHandler)
-         * @see HasValidation#setErrorMessage(ErrorMessage)
+         * @see HasValidation#setErrorMessage(String)
          * @param label
          *            label to show validation status for the field
          * @return this binding, for chaining
@@ -395,11 +395,11 @@ public class FieldBinder<TARGET> implements Serializable {
          * The method may be called only once. It means there is no chain unlike
          * {@link #withValidator(Validator)} or
          * {@link #withConverter(Converter)}. Also it means that the shorthand
-         * method {@link #withStatusLabel(Label)} also may not be called after
+         * method {@link #withStatusLabel(HasText)} also may not be called after
          * this method.
          *
-         * @see #withStatusLabel(Label)
-         * @see HasValidation#setErrorMessage(ErrorMessage)
+         * @see #withStatusLabel(HasText)
+         * @see HasValidation#setErrorMessage(String)
          * @param handler
          *            status change handler
          * @return this binding, for chaining
@@ -1179,7 +1179,7 @@ public class FieldBinder<TARGET> implements Serializable {
      * {@code field.setRequiredIndicatorVisible(false)} should be called.
      *
      * @see HasValidation#setErrorMessage
-     * @see HasValidation#setRequiredIndicatorVisible
+     * @see HasValue#setRequiredIndicatorVisible
      *
      * @param field
      *            the field to remove from the binding
@@ -1200,7 +1200,7 @@ public class FieldBinder<TARGET> implements Serializable {
      *
      * @see FieldBinder#removeBinding(HasValue)
      * @see HasValidation#setErrorMessage
-     * @see HasValidation#setRequiredIndicatorVisible
+     * @see HasValue#setRequiredIndicatorVisible
      *
      * @param binding
      *            the binding to remove
@@ -1309,7 +1309,7 @@ public class FieldBinder<TARGET> implements Serializable {
     /**
      * Handles a validation error emitted when trying to write the value of the
      * given field. The default implementation sets the
-     * {@link HasValidation#setErrorMessage(ErrorMessage) component error}
+     * {@link HasValidation#setErrorMessage(String)} component error
      * of the field if it is a HasValidation, otherwise does nothing.
      *
      * @param field
@@ -1321,7 +1321,7 @@ public class FieldBinder<TARGET> implements Serializable {
         result.getErrorLevel().ifPresent(level -> {
             if (field instanceof HasValidation) {
                 HasValidation fieldWithValidation = (HasValidation) field;
-                fieldWithValidation.setInvalid(true);
+                fieldWithValidation.setInvalid(true);                
                 fieldWithValidation.setErrorMessage(result.getErrorMessage());
             }
         });
@@ -1330,7 +1330,7 @@ public class FieldBinder<TARGET> implements Serializable {
     /**
      * Clears the error condition of the given field, if any. The default
      * implementation clears the
-     * {@link HasValidation#setErrorMessage(ErrorMessage) component error}
+     * {@link HasValidation#setErrorMessage(String)} component error
      * of the field if it is a HasValidation, otherwise does nothing.
      *
      * @param field
@@ -1349,17 +1349,17 @@ public class FieldBinder<TARGET> implements Serializable {
      * Setting this handler will override the default behavior, which is to let
      * fields show their validation status messages and show binder level
      * validation errors or OK status in the label set with
-     * {@link #setStatusLabel(Label)}.
+     * {@link #setStatusLabel(HasText)}.
      * <p>
      * This handler cannot be set after the status label has been set with
-     * {@link #setStatusLabel(Label)}, or {@link #setStatusLabel(Label)} cannot
+     * {@link #setStatusLabel(HasText)}, or {@link #setStatusLabel(HasText)} cannot
      * be used after this handler has been set.
      *
      * @param statusHandler
      *            the status handler to set, not <code>null</code>
      * @throws NullPointerException
      *             for <code>null</code> status handler
-     * @see #setStatusLabel(Label)
+     * @see #setStatusLabel(HasText)
      * @see FieldBindingBuilder#withValidationStatusHandler(FieldBindingValidationStatusHandler)
      */
     public void setValidationStatusHandler(
@@ -1451,7 +1451,7 @@ public class FieldBinder<TARGET> implements Serializable {
      * @param statusLabel
      *            the status label to set
      * @see #setValidationStatusHandler(FieldBinderValidationStatusHandler)
-     * @see FieldBindingBuilder#withStatusLabel(Label)
+     * @see FieldBindingBuilder#withStatusLabel(HasText)
      */
     public void setStatusLabel(HasText statusLabel) {
         if (statusHandler != null) {
@@ -1466,7 +1466,7 @@ public class FieldBinder<TARGET> implements Serializable {
      * Gets the status label or an empty optional if none has been set.
      *
      * @return the optional status label
-     * @see #setStatusLabel(Label)
+     * @see #setStatusLabel(HasText)
      */
     public Optional<HasText> getStatusLabel() {
         return Optional.ofNullable(statusLabel);
@@ -1488,7 +1488,7 @@ public class FieldBinder<TARGET> implements Serializable {
      * <p>
      * Passes all field related results to the Binding status handlers. All
      * other status changes are displayed in the status label, if one has been
-     * set with {@link #setStatusLabel(Label)}.
+     * set with {@link #setStatusLabel(HasText)}.
      *
      * @param binderStatus
      *            status of validation results from binding
@@ -1608,8 +1608,6 @@ public class FieldBinder<TARGET> implements Serializable {
      *
      * @param binding
      *            the binding whose value has been changed
-     * @param event
-     *            the value change event
      */
     protected void handleFieldValueChange(FieldBinding<?> binding) {
     	changedBinding = binding;

@@ -12,8 +12,8 @@ import java.util.EventObject;
  * <li>FieldBinder#validate() or FieldBinding#validate() is called
  * </ul>
  *
- * @see StatusChangeListener#statusChange(StatusChangeEvent)
- * @see Binder#addStatusChangeListener(StatusChangeListener)
+ * @see com.vaadin.flow.data.binder.StatusChangeListener#statusChange(StatusChangeEvent)
+ * @see com.vaadin.flow.data.binder.Binder#addStatusChangeListener(StatusChangeListener)
  *
  */
 public class FieldBinderStatusChangeEvent extends EventObject {
